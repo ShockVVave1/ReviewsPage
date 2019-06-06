@@ -1,0 +1,10 @@
+CREATE TABLE Reviews
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    fio varchar(50),
+    subject ENUM('thanks', 'proposal', 'claim') NOT NULL,
+    review tinytext NOT NULL,
+    img varchar(255),
+    likes smallint DEFAULT 0,
+    date timestamp NOT NULL
+);

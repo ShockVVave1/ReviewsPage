@@ -1,0 +1,1 @@
+INSERT INTO `Reviews` (`id`, `fio`, `subject`, `review`, `img`, `likes`, `date`) VALUES (NULL, 'Новиков Денис Андреевич', 'thanks', 'Спасибо! Очень понравилось, продолжайте в том же духе', NULL, '5', CURRENT_TIMESTAMP);
