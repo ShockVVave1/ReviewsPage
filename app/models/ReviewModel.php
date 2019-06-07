@@ -26,8 +26,7 @@ class ReviewModel
 
         //Переменные диапазона индексов текущей страницы
         $start = (($page - 1) * $postsPerPage + 1);
-        $end = $start + $postsPerPage;
-
+        $end = $start + $postsPerPage - 1;
         //Смотреть записи с конца
         if ($sortby == 'DESC' || $sortby == 'desc') {
             $newEnd = $end;

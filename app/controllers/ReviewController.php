@@ -8,7 +8,6 @@
 
 class ReviewController
 {
-
     /**
      * @param $params
      * @return mixed
@@ -18,7 +17,9 @@ class ReviewController
         //Стартовые переменные
         $page = 1;
         $sortby = 'ASC';
-        $postsPerPage = 6;
+        $postsPerPage = 7;
+        $chekedGetParams = 0;
+        $postsPerPageArray = array(7, 14, 21, 70);
 
         //если страница указана запоминаем
         if (!empty($params)) {
@@ -28,17 +29,16 @@ class ReviewController
         //не выбран ли тип сортировки
         if (isset($_GET['sortby']) && ($_GET['sortby'] == 'asc' || $_GET['sortby'] == 'desc' || $_GET['sortby'] == 'ASC' || $_GET['sortby'] == 'DESC')) {
             $sortby = $_GET['sortby'];
-            unset($_GET['sortby']);
+            $chekedGetParams++;
         };
 
         //не выбрано ли количество записей на страницу
-        if (isset($_GET['postsperpage']) && (in_array((int)$_GET['postsperpage'], array(7, 14, 21, 70)))) {
-            $postsPerPage = (int)$_GET['postsperpage'] - 1;
-            unset($_GET['postsperpage']);
+        if (isset($_GET['postsperpage']) && (in_array((int)$_GET['postsperpage'], $postsPerPageArray))) {
+            $postsPerPage = (int)$_GET['postsperpage'];
+            $chekedGetParams++;
         }
-
         //если есть неизвестный параметр->404
-        if (count($_GET)) {
+        if (count($_GET) != $chekedGetParams) {
             die;
         }
 
@@ -48,10 +48,20 @@ class ReviewController
         //содержит полученные записи
         $reviews = ReviewModel::getReviews($page, $sortby, $postsPerPage, $count);
 
+        $pagination = Common::getPagination($page, $count, $postsPerPage, $_GET);
+
+        $filter = Common::getViewOption($postsPerPageArray, $sortby, $postsPerPage);
 
         return include ROOT . '/app/views/reviews.php';
     }
 
+    public static function actionAdd()
+    {
+
+
+        $_GET['toEnd'] = true;
+        header('Location: /');
+    }
 
     /**
      * Функция добавления 100 миллионов записей в БД

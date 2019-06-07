@@ -52,6 +52,7 @@ class Router
                 //количество подмасок в пути
                 $mask_count = substr_count($path, '$');
 
+                /*
                 //количество параметров в запросе
                 $param_count = substr_count($uri, '?');
 
@@ -59,7 +60,7 @@ class Router
                 if ($param_count > 0) {
                     $path .= '/$' . ($mask_count + 1);
                 }
-
+                   */
                 //Получение внутреннего маршрута
                 $internalPath = preg_replace('~^' . $uriPattern . '$~', $path, $uri);
 

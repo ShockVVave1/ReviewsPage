@@ -28,4 +28,3 @@ function component_autoload($class_name)
 
 //Регистрация автозагрузчика
 spl_autoload_register('component_autoload');
-echo 'Автозагрузчик подключен';
