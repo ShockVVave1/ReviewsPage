@@ -8,19 +8,39 @@
 
 class ReviewModel
 {
-    public static function getReviews($page)
+    /**
+     *
+     * Функция получегия записей отзывов учитывая постраничный вывод
+     * @param $page
+     * @param $sortby
+     * @param $postsPerPage
+     * @param $count
+     * @return array
+     */
+    public static function getReviews($page, $sortby, $postsPerPage, $count)
     {
-
+        //Результирующий массив
         $reviewList = array();
         //Получение соединения с БД
         $db = Db::getConnection();
 
-        $start = ($page-1)*2;
+        //Переменные диапазона индексов текущей страницы
+        $start = (($page - 1) * $postsPerPage + 1);
+        $end = $start + $postsPerPage;
 
-        $reviews = $db->query("SELECT * FROM Reviews ORDER BY date LIMIT $start, 2");
+        //Смотреть записи с конца
+        if ($sortby == 'DESC' || $sortby == 'desc') {
+            $newEnd = $end;
+            $end = $count - $start;
+            $start = $count - $newEnd;
+        }
+
+        //запрос в БД
+        $reviews = $db->query("SELECT * FROM Reviews  WHERE ID BETWEEN $start AND $end ORDER BY ID $sortby;");
         $reviews->setFetchMode(PDO::FETCH_NUM);
-        $i = 0;
+
         //Сохранение полученных данных
+        $i = 0;
         while ($row = $reviews->fetch()) {
             $reviewList[$i]['id'] = $row['0'];
             $reviewList[$i]['fio'] = $row['1'];
@@ -31,19 +51,24 @@ class ReviewModel
             $reviewList[$i]['date'] = $row['6'];
             $i++;
         }
+
         //Возвращение результируещего массива
-        echo $page;
         return $reviewList;
     }
 
-    public static function getReviewsCount()
+    /**
+     * Получает макс значение id записи пользователя
+     * @return bool|PDOStatement
+     */
+    public static function getMaxId()
     {
-
         $db = Db::getConnection();
 
         //Запрос sql в БД
-        $count = $db->query('SELECT COUNT(*) FROM Reviews');
+        $max = $db->query('SELECT MAX(id) FROM Reviews');
+        $max->setFetchMode(PDO::FETCH_NUM);
+        $max = $max->fetch()[0];
 
-        return $count->fetch();
+        return $max;
     }
 }

@@ -22,7 +22,6 @@ function component_autoload($class_name)
         $path = ROOT . $path . $class_name . '.php';
         if (is_file($path)) {
             require_once($path);
-            echo $path;
         }
     }
 }

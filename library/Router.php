@@ -1,17 +1,19 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: shockvvave
- * Date: 05.06.19
- * Time: 17:22
+ * Class Router - Машрутизатор
  */
-
-
 class Router
 {
+    /**
+     * Router constructor.
+     */
     public function __construct()
     {
+        //переменная с путем к файлу маршрутов
         $routes_path = ROOT . '/app/configs/routes.php';
+
+        //подключения файла маршрутов
         try {
             if (!file_exists($routes_path)) {
                 throw new Exception('Руты не найдены');
@@ -34,6 +36,10 @@ class Router
         }
     }
 
+
+    /**
+     * Машрутизация запроса
+     */
     public function run()
     {
         $uri = $this->getUri();
@@ -42,7 +48,7 @@ class Router
         //Цикл проверки запроса на совпадение с рутами
         foreach ($this->routes as $uriPattern => $path) {
             if (preg_match('~^' . $uriPattern . '$~', $uri)) {
-                echo 'Зашли в условие';
+
                 //количество подмасок в пути
                 $mask_count = substr_count($path, '$');
 

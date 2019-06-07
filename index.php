@@ -21,12 +21,9 @@ define('ROOT', dirname(__FILE__));
 // Подключение файлов системы
 require_once(ROOT . '/library/Autoload.php');
 
-include_once ROOT.'/database/setupScript.php';
+//include_once ROOT.'/database/setupScript.php';
 
 //Создание и инициализация маршрутизатора
 $router = new Router();
 $router->run();
 
-/*echo '<pre>';
-print_r($_SERVER);
-echo '</pre>';*/
